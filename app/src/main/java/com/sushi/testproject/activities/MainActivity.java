@@ -190,6 +190,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         });
 
         if (Utility.isOnline(MainActivity.this)) {
+            contentLayout.setVisibility(View.GONE);
             shimmer_view.setVisibility(View.VISIBLE);
             shimmer_view.startShimmerAnimation();
             /*Create handle for the RetrofitInstance interface*/
