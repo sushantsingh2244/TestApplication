@@ -120,12 +120,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         Typeface typeface = Typeface.createFromAsset(this.getAssets(), "fonts/os_regular.ttf");
         Typeface typeface1 = Typeface.createFromAsset(this.getAssets(), "fonts/os_medium.ttf");
         Typeface typeface2 = Typeface.createFromAsset(this.getAssets(), "fonts/os_bold.ttf");
-        lblTotalCase.setTypeface(typeface);
-        lblRecovered.setTypeface(typeface);
-        lblDeath.setTypeface(typeface);
-        txtTotalCase.setTypeface(typeface1);
-        txtRecovered.setTypeface(typeface1);
-        txtDeath.setTypeface(typeface1);
+        lblTotalCase.setTypeface(typeface1);
+        lblRecovered.setTypeface(typeface1);
+        lblDeath.setTypeface(typeface1);
+        txtTotalCase.setTypeface(typeface2);
+        txtRecovered.setTypeface(typeface2);
+        txtDeath.setTypeface(typeface2);
 
         callLocationInfo();
 

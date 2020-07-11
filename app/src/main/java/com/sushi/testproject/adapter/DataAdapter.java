@@ -3,6 +3,7 @@ package com.sushi.testproject.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -51,8 +53,19 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             String countryName = countryModel.getCountry();
             if (countryName.equalsIgnoreCase(country)) {
                 setView(holder, countryModel);
+                ((VHItem) holder).txtCountry.setTextSize(18f);
+                ((VHItem) holder).txtCountry.setTextColor(Color.parseColor("#6200EE"));
+                ((VHItem) holder).txtTotalCase.setTextSize(16f);
+                ((VHItem) holder).txtRecovered.setTextSize(16f);
+                ((VHItem) holder).txtDeath.setTextSize(16f);
+            }else {
+                setView(holder, countryModel);
+                ((VHItem) holder).txtCountry.setTextSize(16f);
+                ((VHItem) holder).txtCountry.setTextColor(Color.parseColor("#272F38"));
+                ((VHItem) holder).txtTotalCase.setTextSize(14f);
+                ((VHItem) holder).txtRecovered.setTextSize(14f);
+                ((VHItem) holder).txtDeath.setTextSize(14f);
             }
-            setView(holder, countryModel);
         }
     }
 
@@ -84,11 +97,12 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private class VHItem extends RecyclerView.ViewHolder {
         private TextView txtCountry, lblTotalCase, txtTotalCase, lblDeath, txtDeath, lblRecovered, txtRecovered;
         private View itemView1;
-        private LinearLayout rowLayout;
+        private LinearLayout card;
 
         private VHItem(View itemView) {
             super(itemView);
 
+            card = (LinearLayout) itemView.findViewById(R.id.card);
             txtCountry = (TextView) itemView.findViewById(R.id.txtCountry);
             lblTotalCase = (TextView) itemView.findViewById(R.id.lblTotalCase);
             txtTotalCase = (TextView) itemView.findViewById(R.id.txtTotalCase);
