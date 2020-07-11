@@ -2,6 +2,7 @@ package com.sushi.testproject.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,8 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private CountryModel countryModel;
     private WeakReference<Context> context;
     private FragmentManager fragmentManager;
+    private SharedPreferences sharedPreferences;
+    private String country;
 
     public DataAdapter(ArrayList<CountryModel> countryModels, Context context) {
         this.countryModels = countryModels;
@@ -43,13 +46,25 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof VHItem) {
             countryModel = getItem(position);
-            ((VHItem) holder).txtCountry.setText(countryModel.getCountry());
-            ((VHItem) holder).txtTotalCase.setText(countryModel.getNewConfirmed() + "/" + countryModel.getTotalConfirmed());
-            ((VHItem) holder).txtRecovered.setText(countryModel.getNewRecovered() + "/" + countryModel.getTotalRecovered());
-            ((VHItem) holder).txtDeath.setText(countryModel.getNewDeaths() + "/" + countryModel.getTotalDeaths());
+            sharedPreferences = context.get().getSharedPreferences("CountryName", 0);
+            country = sharedPreferences.getString("Country", "");
+                String countryName= countryModel.getCountry();
+                if (countryName.equalsIgnoreCase(country)) {
+                    setView(holder, countryModel);
+                }
 
+            setView(holder, countryModel);
         }
     }
+
+
+    private void setView(RecyclerView.ViewHolder holder, CountryModel expenseModel) {
+        ((VHItem) holder).txtCountry.setText(countryModel.getCountry());
+        ((VHItem) holder).txtTotalCase.setText(countryModel.getNewConfirmed() + "/" + countryModel.getTotalConfirmed());
+        ((VHItem) holder).txtRecovered.setText(countryModel.getNewRecovered() + "/" + countryModel.getTotalRecovered());
+        ((VHItem) holder).txtDeath.setText(countryModel.getNewDeaths() + "/" + countryModel.getTotalDeaths());
+    }
+
 
     @Override
     public int getItemCount() {

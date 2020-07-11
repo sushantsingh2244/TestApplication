@@ -53,11 +53,12 @@ public class Utility {
             if (addresses != null) {
                 Address returnedAddress = addresses.get(0);
                 StringBuilder strReturnedAddress = new StringBuilder("");
-
-                for (int i = 0; i <= returnedAddress.getMaxAddressLineIndex(); i++) {
-                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
-                }
-                strAdd = strReturnedAddress.toString().trim();
+//                for (int i = 0; i <= returnedAddress.getMaxAddressLineIndex(); i++) {
+//                   // strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
+//
+//                }
+                strAdd = returnedAddress.getCountryName();
+               // strAdd = strReturnedAddress.toString().trim();
                 Log.e("Location1 : ", strReturnedAddress.toString());
             } else {
                 Log.e("Location2 : ", "No Address returned!");
