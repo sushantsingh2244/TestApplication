@@ -14,4 +14,10 @@
     <dimen name="activity_margin_10dp">10dp</dimen>
     <dimen name="text_size_20sp">20sp</dimen>
     <dimen name="text_size_12sp">12sp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="padding_10">10dp</dimen>
+    <dimen name="placeholderTextHeight">12dp</dimen>
+    <dimen name="activity_margin_50dp">50dp</dimen>
+    <dimen name="activity_margin_200dp">200dp</dimen>
+    <dimen name="activity_margin_15dp">15dp</dimen>
 </resources>

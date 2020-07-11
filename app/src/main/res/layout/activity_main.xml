@@ -1,128 +1,177 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:shimmer="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.MainActivity">
 
-    <LinearLayout
-        android:id="@+id/summaryLayout"
+    <RelativeLayout
+        android:id="@+id/contentLayout"
         android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/summaryLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="@dimen/activity_margin_7dp"
+            android:layout_marginEnd="@dimen/activity_margin_7dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="@dimen/activity_margin_0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/activity_margin_3dp"
+                android:layout_weight=".3"
+                android:background="@drawable/cell_shape_yellow"
+                android:orientation="vertical"
+                android:padding="@dimen/activity_margin_3dp">
+
+                <TextView
+                    android:id="@+id/lblTotalCase"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/activity_margin_10dp"
+                    android:paddingTop="@dimen/activity_margin_5dp"
+                    android:paddingEnd="@dimen/activity_margin_5dp"
+                    android:text="Total Case"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_12sp" />
+
+                <TextView
+                    android:id="@+id/txtTotalCase"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|left"
+                    android:paddingStart="@dimen/activity_margin_10dp"
+                    android:paddingEnd="@dimen/activity_margin_5dp"
+                    android:paddingBottom="@dimen/activity_margin_5dp"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_20sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="@dimen/activity_margin_0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/activity_margin_3dp"
+                android:layout_weight=".3"
+                android:background="@drawable/cell_shape_green"
+                android:orientation="vertical"
+                android:padding="@dimen/activity_margin_3dp">
+
+                <TextView
+                    android:id="@+id/lblRecovered"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/activity_margin_10dp"
+                    android:paddingTop="@dimen/activity_margin_5dp"
+                    android:paddingEnd="@dimen/activity_margin_3dp"
+                    android:text="Recovered"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_12sp" />
+
+                <TextView
+                    android:id="@+id/txtRecovered"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|left"
+                    android:paddingStart="@dimen/activity_margin_10dp"
+                    android:paddingEnd="@dimen/activity_margin_5dp"
+                    android:paddingBottom="@dimen/activity_margin_5dp"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_20sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="@dimen/activity_margin_0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/activity_margin_3dp"
+                android:layout_weight=".3"
+                android:background="@drawable/cell_shape_red"
+                android:orientation="vertical"
+                android:padding="@dimen/activity_margin_3dp">
+
+                <TextView
+                    android:id="@+id/lblDeath"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/activity_margin_10dp"
+                    android:paddingTop="@dimen/activity_margin_5dp"
+                    android:paddingEnd="@dimen/activity_margin_5dp"
+                    android:text="Death"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_12sp" />
+
+                <TextView
+                    android:id="@+id/txtDeath"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|left"
+                    android:paddingStart="@dimen/activity_margin_10dp"
+                    android:paddingEnd="@dimen/activity_margin_5dp"
+                    android:paddingBottom="@dimen/activity_margin_5dp"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_20sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/itemRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/summaryLayout"
+            android:padding="5dp" />
+
+        <ImageView
+            android:id="@+id/imgSort"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="@dimen/fab_margin"
+            android:orientation="vertical"
+            android:padding="@dimen/activity_margin_3dp"
+            android:src="@drawable/ic_sort" />
+    </RelativeLayout>
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_view"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="@dimen/activity_margin_7dp"
-        android:layout_marginEnd="@dimen/activity_margin_7dp"
-        android:orientation="horizontal">
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/activity_margin_15dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        shimmer:duration="800">
 
+        <!-- Adding 7 rows of placeholders -->
         <LinearLayout
-            android:layout_width="@dimen/activity_margin_0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/activity_margin_3dp"
-            android:layout_weight=".3"
-            android:background="@drawable/cell_shape_yellow"
-            android:orientation="vertical"
-            android:padding="@dimen/activity_margin_3dp">
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/lblTotalCase"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingStart="@dimen/activity_margin_10dp"
-                android:paddingTop="@dimen/activity_margin_5dp"
-                android:paddingEnd="@dimen/activity_margin_5dp"
-                android:text="Total Case"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_size_12sp" />
+            <include layout="@layout/placeholder_query_layout" />
 
-            <TextView
-                android:id="@+id/txtTotalCase"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center|left"
-                android:paddingStart="@dimen/activity_margin_10dp"
-                android:paddingEnd="@dimen/activity_margin_5dp"
-                android:paddingBottom="@dimen/activity_margin_5dp"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_size_20sp" />
+            <include layout="@layout/placeholder_query_layout" />
 
+            <include layout="@layout/placeholder_query_layout" />
+
+            <include layout="@layout/placeholder_query_layout" />
+
+            <include layout="@layout/placeholder_query_layout" />
+
+            <include layout="@layout/placeholder_query_layout" />
+
+            <include layout="@layout/placeholder_query_layout" />
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="@dimen/activity_margin_0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/activity_margin_3dp"
-            android:layout_weight=".3"
-            android:background="@drawable/cell_shape_green"
-            android:orientation="vertical"
-            android:padding="@dimen/activity_margin_3dp">
-
-            <TextView
-                android:id="@+id/lblRecovered"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingStart="@dimen/activity_margin_10dp"
-                android:paddingTop="@dimen/activity_margin_5dp"
-                android:paddingEnd="@dimen/activity_margin_3dp"
-                android:text="Recovered"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_size_12sp" />
-
-            <TextView
-                android:id="@+id/txtRecovered"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center|left"
-                android:paddingStart="@dimen/activity_margin_10dp"
-                android:paddingEnd="@dimen/activity_margin_5dp"
-                android:paddingBottom="@dimen/activity_margin_5dp"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_size_20sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="@dimen/activity_margin_0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/activity_margin_3dp"
-            android:layout_weight=".3"
-            android:background="@drawable/cell_shape_red"
-            android:orientation="vertical"
-            android:padding="@dimen/activity_margin_3dp">
-
-            <TextView
-                android:id="@+id/lblDeath"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingStart="@dimen/activity_margin_10dp"
-                android:paddingTop="@dimen/activity_margin_5dp"
-                android:paddingEnd="@dimen/activity_margin_5dp"
-                android:text="Death"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_size_12sp" />
-
-            <TextView
-                android:id="@+id/txtDeath"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center|left"
-                android:paddingStart="@dimen/activity_margin_10dp"
-                android:paddingEnd="@dimen/activity_margin_5dp"
-                android:paddingBottom="@dimen/activity_margin_5dp"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_size_20sp" />
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/itemRecycler"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/summaryLayout"
-        android:padding="5dp" />
-
-</RelativeLayout>
+    </com.facebook.shimmer.ShimmerFrameLayout>
+</FrameLayout>

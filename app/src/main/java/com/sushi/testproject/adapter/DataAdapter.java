@@ -48,17 +48,16 @@ public class DataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             countryModel = getItem(position);
             sharedPreferences = context.get().getSharedPreferences("CountryName", 0);
             country = sharedPreferences.getString("Country", "");
-                String countryName= countryModel.getCountry();
-                if (countryName.equalsIgnoreCase(country)) {
-                    setView(holder, countryModel);
-                }
-
+            String countryName = countryModel.getCountry();
+            if (countryName.equalsIgnoreCase(country)) {
+                setView(holder, countryModel);
+            }
             setView(holder, countryModel);
         }
     }
 
 
-    private void setView(RecyclerView.ViewHolder holder, CountryModel expenseModel) {
+    private void setView(RecyclerView.ViewHolder holder, CountryModel countryModel) {
         ((VHItem) holder).txtCountry.setText(countryModel.getCountry());
         ((VHItem) holder).txtTotalCase.setText(countryModel.getNewConfirmed() + "/" + countryModel.getTotalConfirmed());
         ((VHItem) holder).txtRecovered.setText(countryModel.getNewRecovered() + "/" + countryModel.getTotalRecovered());

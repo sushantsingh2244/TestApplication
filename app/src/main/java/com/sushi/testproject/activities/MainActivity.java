@@ -17,10 +17,15 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResolvableApiException;
@@ -54,6 +59,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -81,11 +88,15 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     private RecyclerView itemRecycler;
     private TextView lblTotalCase, lblRecovered, lblDeath;
     private TextView txtTotalCase, txtRecovered, txtDeath;
+    private ImageView imgSort;
+    private ShimmerFrameLayout shimmer_view;
+    private RelativeLayout contentLayout;
+
     private ArrayList<CountryModel> countryInfo;
-    private ProgressDialog progressDoalog;
     private int TotalCase = 0;
     private int Death = 0;
     private int Recovered = 0;
+    private boolean sort;
     private SharedPreferences pref;
     SharedPreferences.Editor editor;
 
@@ -94,6 +105,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        contentLayout = findViewById(R.id.contentLayout);
+        shimmer_view = findViewById(R.id.shimmer_view);
         itemRecycler = findViewById(R.id.itemRecycler);
         lblTotalCase = findViewById(R.id.lblTotalCase);
         lblRecovered = findViewById(R.id.lblRecovered);
@@ -101,6 +114,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         txtTotalCase = findViewById(R.id.txtTotalCase);
         txtRecovered = findViewById(R.id.txtRecovered);
         txtDeath = findViewById(R.id.txtDeath);
+        imgSort = findViewById(R.id.imgSort);
 
         Typeface typeface = Typeface.createFromAsset(this.getAssets(), "fonts/os_regular.ttf");
         Typeface typeface1 = Typeface.createFromAsset(this.getAssets(), "fonts/os_medium.ttf");
@@ -120,69 +134,110 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         countryInfo = new ArrayList<>();
         dataAdapter = new DataAdapter(countryInfo, this);
         Utility.setRecycler(this, itemRecycler, dataAdapter);
-
-        if (Utility.isOnline(MainActivity.this)) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                JobScheduler jobScheduler = (JobScheduler) MainActivity.this.getSystemService(Context.JOB_SCHEDULER_SERVICE);
-                // jobScheduler.cancelAll();
-                // scheduleJob(MainActivity.this, jobScheduler);
-            }
-        }
-
-        progressDoalog = new ProgressDialog(MainActivity.this);
-        progressDoalog.setMessage("Loading....");
-        progressDoalog.show();
-
-        /*Create handle for the RetrofitInstance interface*/
-        ApiInterface service = MyApplication.getInstance().getRetrofitInstance().create(ApiInterface.class);
-
-        Call<JsonObject> call = service.getAllData();
-        call.enqueue(new Callback<JsonObject>() {
+        sort = true;
+        imgSort.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                progressDoalog.dismiss();
-                final String respons = response.body().toString();
-                JSONObject jsonObject = null;
-                try {
-                    jsonObject = new JSONObject(respons);
-                    JSONArray JArray = jsonObject.getJSONArray("Countries");
-                    if (JArray.length() > 0) {
-                        for (int i = 0; i < JArray.length(); i++) {
-                            JSONObject json = JArray.getJSONObject(i);
-                            CountryModel countryModel = new CountryModel();
-                            countryModel.setCountry(json.getString("Country"));
-                            countryModel.setCountryCode(json.getString("CountryCode"));
-                            countryModel.setSlug(json.getString("Slug"));
-                            countryModel.setNewConfirmed(Integer.valueOf(json.getString("NewConfirmed")));
-                            countryModel.setTotalConfirmed(Integer.valueOf(json.getString("TotalConfirmed")));
-                            TotalCase = TotalCase + Integer.parseInt(json.getString("TotalConfirmed"));
-                            countryModel.setNewDeaths(Integer.valueOf(json.getString("NewDeaths")));
-                            countryModel.setTotalDeaths(Integer.valueOf(json.getString("TotalDeaths")));
-                            Death = Death + Integer.parseInt(json.getString("TotalDeaths"));
-                            countryModel.setNewRecovered(Integer.valueOf(json.getString("NewRecovered")));
-                            countryModel.setTotalRecovered(Integer.valueOf(json.getString("TotalRecovered")));
-                            Recovered = Recovered + Integer.parseInt(json.getString("TotalRecovered"));
-                            countryModel.setDate(json.getString("Date"));
-                            countryInfo.add(countryModel);
-                            dataAdapter.notifyDataSetChanged();
+            public void onClick(View view) {
+                Collections.sort(countryInfo, new Comparator<CountryModel>() {
+                    public int compare(CountryModel obj1, CountryModel obj2) {
+                        if (sort) {                // ===================Descending order===========
+                            contentLayout.setVisibility(View.GONE);
+                            shimmer_view.setVisibility(View.VISIBLE);
+                            shimmer_view.startShimmerAnimation();
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    shimmer_view.stopShimmerAnimation();
+                                    shimmer_view.setVisibility(View.GONE);
+                                }
+                            }, 3000);
+                            contentLayout.setVisibility(View.VISIBLE);
+                            sort = false;
+                            imgSort.setImageResource(R.drawable.ic_sort_a);
+                            return obj2.getCountry().compareToIgnoreCase(obj1.getCountry());
+                        } else {                   // ===================Ascending order=============
+                            contentLayout.setVisibility(View.GONE);
+                            shimmer_view.setVisibility(View.VISIBLE);
+                            shimmer_view.startShimmerAnimation();
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    shimmer_view.stopShimmerAnimation();
+                                    shimmer_view.setVisibility(View.GONE);
+                                }
+                            }, 3000);
+                            contentLayout.setVisibility(View.VISIBLE);
+                            sort = true;
+                            imgSort.setImageResource(R.drawable.ic_sort);
+                            return obj1.getCountry().compareToIgnoreCase(obj2.getCountry());
                         }
-                        txtTotalCase.setText("" + TotalCase);
-                        txtRecovered.setText("" + Recovered);
-                        txtDeath.setText("" + Death);
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-                progressDoalog.dismiss();
-                Toast.makeText(MainActivity.this, "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
+                });
             }
         });
-    }
 
+        if (Utility.isOnline(MainActivity.this)) {
+            shimmer_view.setVisibility(View.VISIBLE);
+            shimmer_view.startShimmerAnimation();
+            /*Create handle for the RetrofitInstance interface*/
+            ApiInterface service = MyApplication.getInstance().getRetrofitInstance().create(ApiInterface.class);
+
+            Call<JsonObject> call = service.getAllData();
+            call.enqueue(new Callback<JsonObject>() {
+                @Override
+                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                    shimmer_view.stopShimmerAnimation();
+                    final String respons = response.body().toString();
+                    JSONObject jsonObject = null;
+                    contentLayout.setVisibility(View.VISIBLE);
+                    try {
+                        jsonObject = new JSONObject(respons);
+                        JSONArray JArray = jsonObject.getJSONArray("Countries");
+                        if (JArray.length() > 0) {
+                            for (int i = 0; i < JArray.length(); i++) {
+                                JSONObject json = JArray.getJSONObject(i);
+                                CountryModel countryModel = new CountryModel();
+                                countryModel.setCountry(json.getString("Country"));
+                                countryModel.setCountryCode(json.getString("CountryCode"));
+                                countryModel.setSlug(json.getString("Slug"));
+                                countryModel.setNewConfirmed(Integer.valueOf(json.getString("NewConfirmed")));
+                                countryModel.setTotalConfirmed(Integer.valueOf(json.getString("TotalConfirmed")));
+                                TotalCase = TotalCase + Integer.parseInt(json.getString("TotalConfirmed"));
+                                countryModel.setNewDeaths(Integer.valueOf(json.getString("NewDeaths")));
+                                countryModel.setTotalDeaths(Integer.valueOf(json.getString("TotalDeaths")));
+                                Death = Death + Integer.parseInt(json.getString("TotalDeaths"));
+                                countryModel.setNewRecovered(Integer.valueOf(json.getString("NewRecovered")));
+                                countryModel.setTotalRecovered(Integer.valueOf(json.getString("TotalRecovered")));
+                                Recovered = Recovered + Integer.parseInt(json.getString("TotalRecovered"));
+                                countryModel.setDate(json.getString("Date"));
+                                countryInfo.add(countryModel);
+                                dataAdapter.notifyDataSetChanged();
+                            }
+                            txtTotalCase.setText("" + TotalCase);
+                            txtRecovered.setText("" + Recovered);
+                            txtDeath.setText("" + Death);
+                            Collections.sort(countryInfo, new Comparator<CountryModel>(){
+                                public int compare(CountryModel obj1, CountryModel obj2) {
+                                     return obj2.getTotalConfirmed().compareTo(obj1.getTotalConfirmed());
+                                }
+                            });
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    shimmer_view.stopShimmerAnimation();
+                    shimmer_view.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onFailure(Call<JsonObject> call, Throwable t) {
+                    shimmer_view.stopShimmerAnimation();
+                    shimmer_view.setVisibility(View.GONE);
+                    Toast.makeText(MainActivity.this, "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
 
     //======================Location============
     private void checkForLocationRequestSetting(LocationRequest locationRequest) {
