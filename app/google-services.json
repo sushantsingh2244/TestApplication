@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "347362875848",
+    "firebase_url": "https://inventiahr-bae35.firebaseio.com",
+    "project_id": "inventiahr-bae35",
+    "storage_bucket": "inventiahr-bae35.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:347362875848:android:8d65c86601be9e3f",
+        "android_client_info": {
+          "package_name": "com.sushi.testproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "347362875848-5n2c4v3200fpgj84dbnhmbahosa82mcn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUxBIcPHotnqZ2jQ5bA5W4_EKAwQuRlJE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
