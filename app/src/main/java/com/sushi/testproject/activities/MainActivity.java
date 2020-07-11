@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     private RecyclerView itemRecycler;
     private TextView lblTotalCase, lblRecovered, lblDeath;
     private TextView txtTotalCase, txtRecovered, txtDeath;
-    private ImageView imgSort;
+    private ImageView imgSortAsc, imgSortDsc;
     private ShimmerFrameLayout shimmer_view;
     private RelativeLayout contentLayout;
 
@@ -114,7 +114,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         txtTotalCase = findViewById(R.id.txtTotalCase);
         txtRecovered = findViewById(R.id.txtRecovered);
         txtDeath = findViewById(R.id.txtDeath);
-        imgSort = findViewById(R.id.imgSort);
+        imgSortAsc = findViewById(R.id.imgSortAsc);
+        imgSortDsc = findViewById(R.id.imgSortDsc);
 
         Typeface typeface = Typeface.createFromAsset(this.getAssets(), "fonts/os_regular.ttf");
         Typeface typeface1 = Typeface.createFromAsset(this.getAssets(), "fonts/os_medium.ttf");
@@ -135,44 +136,56 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         dataAdapter = new DataAdapter(countryInfo, this);
         Utility.setRecycler(this, itemRecycler, dataAdapter);
         sort = true;
-        imgSort.setOnClickListener(new View.OnClickListener() {
+        imgSortDsc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Collections.sort(countryInfo, new Comparator<CountryModel>() {
                     public int compare(CountryModel obj1, CountryModel obj2) {
-                        if (sort) {                // ===================Descending order===========
-                            contentLayout.setVisibility(View.GONE);
-                            shimmer_view.setVisibility(View.VISIBLE);
-                            shimmer_view.startShimmerAnimation();
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    shimmer_view.stopShimmerAnimation();
-                                    shimmer_view.setVisibility(View.GONE);
-                                }
-                            }, 3000);
-                            contentLayout.setVisibility(View.VISIBLE);
-                            sort = false;
-                            imgSort.setImageResource(R.drawable.ic_sort_a);
-                            return obj2.getCountry().compareToIgnoreCase(obj1.getCountry());
-                        } else {                   // ===================Ascending order=============
-                            contentLayout.setVisibility(View.GONE);
-                            shimmer_view.setVisibility(View.VISIBLE);
-                            shimmer_view.startShimmerAnimation();
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    shimmer_view.stopShimmerAnimation();
-                                    shimmer_view.setVisibility(View.GONE);
-                                }
-                            }, 3000);
-                            contentLayout.setVisibility(View.VISIBLE);
-                            sort = true;
-                            imgSort.setImageResource(R.drawable.ic_sort);
-                            return obj1.getCountry().compareToIgnoreCase(obj2.getCountry());
-                        }
+                        contentLayout.setVisibility(View.GONE);
+                        // ===================Descending order===========
+                        shimmer_view.setVisibility(View.VISIBLE);
+                        shimmer_view.startShimmerAnimation();
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                shimmer_view.stopShimmerAnimation();
+                                shimmer_view.setVisibility(View.GONE);
+                                contentLayout.setVisibility(View.VISIBLE);
+                                imgSortDsc.setVisibility(View.GONE);
+                                imgSortAsc.setVisibility(View.VISIBLE);
+                            }
+                        }, 5000);
+
+                        return obj2.getCountry().compareToIgnoreCase(obj1.getCountry());
                     }
                 });
+                dataAdapter.notifyDataSetChanged();
+            }
+        });
+        imgSortAsc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Collections.sort(countryInfo, new Comparator<CountryModel>() {
+                    public int compare(CountryModel obj1, CountryModel obj2) {
+                        contentLayout.setVisibility(View.GONE);
+                        // ===================Ascending order===========
+                        shimmer_view.setVisibility(View.VISIBLE);
+                        shimmer_view.startShimmerAnimation();
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                shimmer_view.stopShimmerAnimation();
+                                shimmer_view.setVisibility(View.GONE);
+                                contentLayout.setVisibility(View.VISIBLE);
+                                imgSortAsc.setVisibility(View.GONE);
+                                imgSortDsc.setVisibility(View.VISIBLE);
+                            }
+                        }, 5000);
+                        sort = true;
+                        return obj1.getCountry().compareToIgnoreCase(obj2.getCountry());
+                    }
+                });
+                dataAdapter.notifyDataSetChanged();
             }
         });
 
@@ -216,9 +229,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                             txtTotalCase.setText("" + TotalCase);
                             txtRecovered.setText("" + Recovered);
                             txtDeath.setText("" + Death);
-                            Collections.sort(countryInfo, new Comparator<CountryModel>(){
+                            Collections.sort(countryInfo, new Comparator<CountryModel>() {
                                 public int compare(CountryModel obj1, CountryModel obj2) {
-                                     return obj2.getTotalConfirmed().compareTo(obj1.getTotalConfirmed());
+                                    return obj2.getTotalConfirmed().compareTo(obj1.getTotalConfirmed());
                                 }
                             });
                         }

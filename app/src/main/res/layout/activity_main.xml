@@ -133,7 +133,7 @@
             android:padding="5dp" />
 
         <ImageView
-            android:id="@+id/imgSort"
+            android:id="@+id/imgSortDsc"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentEnd="true"
@@ -141,7 +141,18 @@
             android:layout_margin="@dimen/fab_margin"
             android:orientation="vertical"
             android:padding="@dimen/activity_margin_3dp"
+            android:visibility="gone"
             android:src="@drawable/ic_sort" />
+        <ImageView
+            android:id="@+id/imgSortAsc"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="@dimen/fab_margin"
+            android:orientation="vertical"
+            android:padding="@dimen/activity_margin_3dp"
+            android:src="@drawable/ic_sort_a" />
     </RelativeLayout>
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmer_view"
