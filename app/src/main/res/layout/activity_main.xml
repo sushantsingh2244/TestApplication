@@ -62,39 +62,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/activity_margin_3dp"
                 android:layout_weight=".3"
-                android:background="@drawable/cell_shape_green"
-                android:orientation="vertical"
-                android:padding="@dimen/activity_margin_3dp">
-
-                <TextView
-                    android:id="@+id/lblRecovered"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="@dimen/activity_margin_10dp"
-                    android:paddingTop="@dimen/activity_margin_5dp"
-                    android:paddingEnd="@dimen/activity_margin_3dp"
-                    android:text="Recovered"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_12sp" />
-
-                <TextView
-                    android:id="@+id/txtRecovered"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center|left"
-                    android:paddingStart="@dimen/activity_margin_10dp"
-                    android:paddingEnd="@dimen/activity_margin_5dp"
-                    android:paddingBottom="@dimen/activity_margin_5dp"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_20sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="@dimen/activity_margin_0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/activity_margin_3dp"
-                android:layout_weight=".3"
                 android:background="@drawable/cell_shape_red"
                 android:orientation="vertical"
                 android:padding="@dimen/activity_margin_3dp">
@@ -123,37 +90,179 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="@dimen/activity_margin_0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/activity_margin_3dp"
+                android:layout_weight=".3"
+                android:background="@drawable/cell_shape_green"
+                android:orientation="vertical"
+                android:padding="@dimen/activity_margin_3dp">
+
+                <TextView
+                    android:id="@+id/lblRecovered"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/activity_margin_10dp"
+                    android:paddingTop="@dimen/activity_margin_5dp"
+                    android:paddingEnd="@dimen/activity_margin_3dp"
+                    android:text="Recovered"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_12sp" />
+
+                <TextView
+                    android:id="@+id/txtRecovered"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|left"
+                    android:paddingStart="@dimen/activity_margin_10dp"
+                    android:paddingEnd="@dimen/activity_margin_5dp"
+                    android:paddingBottom="@dimen/activity_margin_5dp"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_20sp" />
+
+            </LinearLayout>
+
         </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/sortLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/summaryLayout"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="@dimen/activity_margin_7dp"
+            android:layout_marginEnd="@dimen/activity_margin_7dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="@dimen/activity_margin_0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/activity_margin_3dp"
+                android:layout_weight=".3"
+                android:background="@drawable/cell_shape_yellow"
+                android:orientation="horizontal"
+                android:padding="@dimen/activity_margin_3dp">
+
+                <TextView
+                    android:id="@+id/lblAsc"
+                    android:layout_width="@dimen/activity_margin_0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".3"
+                    android:gravity="center"
+                    android:padding="@dimen/activity_margin_5dp"
+                    android:text="Total Ascending"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_12sp" />
+
+                <TextView
+                    android:id="@+id/lblDesc"
+                    android:layout_width="@dimen/activity_margin_0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".3"
+                    android:gravity="center"
+                    android:padding="@dimen/activity_margin_5dp"
+                    android:text="Total Descending"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_12sp"
+                    android:visibility="gone" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="@dimen/activity_margin_0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/activity_margin_3dp"
+                android:layout_weight=".3"
+                android:background="@drawable/cell_shape_red"
+                android:orientation="horizontal"
+                android:padding="@dimen/activity_margin_3dp">
+
+                <TextView
+                    android:id="@+id/lblDeathAsc"
+                    android:layout_width="@dimen/activity_margin_0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".3"
+                    android:gravity="center"
+                    android:padding="@dimen/activity_margin_5dp"
+                    android:text="Death Ascending"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_12sp" />
+
+                <TextView
+                    android:id="@+id/lblDeathDesc"
+                    android:layout_width="@dimen/activity_margin_0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".3"
+                    android:gravity="center"
+                    android:padding="@dimen/activity_margin_5dp"
+                    android:text="Death Desc"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_12sp"
+                    android:visibility="gone" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="@dimen/activity_margin_0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/activity_margin_3dp"
+                android:layout_weight=".3"
+                android:background="@drawable/cell_shape_green"
+                android:orientation="horizontal"
+                android:padding="@dimen/activity_margin_3dp">
+
+                <TextView
+                    android:id="@+id/lblRecoveredAsc"
+                    android:layout_width="@dimen/activity_margin_0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".3"
+                    android:gravity="center"
+                    android:padding="@dimen/activity_margin_5dp"
+                    android:text="Recovered Asc"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_12sp" />
+
+                <TextView
+                    android:id="@+id/lblRecoveredDesc"
+                    android:layout_width="@dimen/activity_margin_0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".3"
+                    android:gravity="center"
+                    android:padding="@dimen/activity_margin_5dp"
+                    android:text="Recovered Desc"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_12sp"
+                    android:visibility="gone" />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/lblNote"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginStart="@dimen/activity_margin_7dp"
+            android:textColor="@color/color_272F38"
+            android:layout_below="@id/sortLayout"
+            android:textSize="@dimen/text_size_12sp" />
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/itemRecycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/summaryLayout"
+            android:layout_below="@id/lblNote"
             android:padding="5dp" />
 
-        <ImageView
-            android:id="@+id/imgSortDsc"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="@dimen/fab_margin"
-            android:orientation="vertical"
-            android:padding="@dimen/activity_margin_3dp"
-            android:visibility="gone"
-            android:src="@drawable/ic_sort" />
-        <ImageView
-            android:id="@+id/imgSortAsc"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="@dimen/fab_margin"
-            android:orientation="vertical"
-            android:padding="@dimen/activity_margin_3dp"
-            android:src="@drawable/ic_sort_a" />
     </RelativeLayout>
+
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmer_view"
         android:layout_width="wrap_content"

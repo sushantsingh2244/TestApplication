@@ -72,7 +72,7 @@ import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
-public class MainActivity extends AppCompatActivity implements LocationListener {
+public class MainActivity extends AppCompatActivity implements LocationListener, View.OnClickListener {
     private GoogleApiClient googleApiClient;
     private FusedLocationProviderClient mFusedLocationClient;
     private Location lastLocation;
@@ -86,9 +86,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     public static final int JOB_ID = 100;
     private DataAdapter dataAdapter;
     private RecyclerView itemRecycler;
-    private TextView lblTotalCase, lblRecovered, lblDeath;
+    private TextView lblNote,lblTotalCase, lblRecovered, lblDeath;
     private TextView txtTotalCase, txtRecovered, txtDeath;
-    private ImageView imgSortAsc, imgSortDsc;
+    private TextView lblAsc, lblDesc, lblDeathAsc, lblDeathDesc, lblRecoveredAsc, lblRecoveredDesc;
     private ShimmerFrameLayout shimmer_view;
     private RelativeLayout contentLayout;
 
@@ -96,7 +96,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     private int TotalCase = 0;
     private int Death = 0;
     private int Recovered = 0;
-    private boolean sort;
     private SharedPreferences pref;
     SharedPreferences.Editor editor;
 
@@ -108,24 +107,43 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         contentLayout = findViewById(R.id.contentLayout);
         shimmer_view = findViewById(R.id.shimmer_view);
         itemRecycler = findViewById(R.id.itemRecycler);
+        lblNote = findViewById(R.id.lblNote);
         lblTotalCase = findViewById(R.id.lblTotalCase);
         lblRecovered = findViewById(R.id.lblRecovered);
         lblDeath = findViewById(R.id.lblDeath);
         txtTotalCase = findViewById(R.id.txtTotalCase);
         txtRecovered = findViewById(R.id.txtRecovered);
         txtDeath = findViewById(R.id.txtDeath);
-        imgSortAsc = findViewById(R.id.imgSortAsc);
-        imgSortDsc = findViewById(R.id.imgSortDsc);
+        lblAsc = findViewById(R.id.lblAsc);
+        lblDesc = findViewById(R.id.lblDesc);
+        lblDeathAsc = findViewById(R.id.lblDeathAsc);
+        lblDeathDesc = findViewById(R.id.lblDeathDesc);
+        lblRecoveredAsc = findViewById(R.id.lblRecoveredAsc);
+        lblRecoveredDesc = findViewById(R.id.lblRecoveredDesc);
 
-        Typeface typeface = Typeface.createFromAsset(this.getAssets(), "fonts/os_regular.ttf");
         Typeface typeface1 = Typeface.createFromAsset(this.getAssets(), "fonts/os_medium.ttf");
         Typeface typeface2 = Typeface.createFromAsset(this.getAssets(), "fonts/os_bold.ttf");
+        lblNote.setTypeface(typeface1);
         lblTotalCase.setTypeface(typeface1);
         lblRecovered.setTypeface(typeface1);
         lblDeath.setTypeface(typeface1);
         txtTotalCase.setTypeface(typeface2);
         txtRecovered.setTypeface(typeface2);
         txtDeath.setTypeface(typeface2);
+
+        lblAsc.setTypeface(typeface1);
+        lblDesc.setTypeface(typeface1);
+        lblDeathAsc.setTypeface(typeface1);
+        lblDeathDesc.setTypeface(typeface1);
+        lblRecoveredAsc.setTypeface(typeface1);
+        lblRecoveredDesc.setTypeface(typeface1);
+
+        lblAsc.setOnClickListener(this);
+        lblDesc.setOnClickListener(this);
+        lblDeathAsc.setOnClickListener(this);
+        lblDeathDesc.setOnClickListener(this);
+        lblRecoveredAsc.setOnClickListener(this);
+        lblRecoveredDesc.setOnClickListener(this);
 
         callLocationInfo();
 
@@ -135,59 +153,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         countryInfo = new ArrayList<>();
         dataAdapter = new DataAdapter(countryInfo, this);
         Utility.setRecycler(this, itemRecycler, dataAdapter);
-        sort = true;
-        imgSortDsc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Collections.sort(countryInfo, new Comparator<CountryModel>() {
-                    public int compare(CountryModel obj1, CountryModel obj2) {
-                        contentLayout.setVisibility(View.GONE);
-                        // ===================Descending order===========
-                        shimmer_view.setVisibility(View.VISIBLE);
-                        shimmer_view.startShimmerAnimation();
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                shimmer_view.stopShimmerAnimation();
-                                shimmer_view.setVisibility(View.GONE);
-                                contentLayout.setVisibility(View.VISIBLE);
-                                imgSortDsc.setVisibility(View.GONE);
-                                imgSortAsc.setVisibility(View.VISIBLE);
-                            }
-                        }, 5000);
-
-                        return obj2.getCountry().compareToIgnoreCase(obj1.getCountry());
-                    }
-                });
-                dataAdapter.notifyDataSetChanged();
-            }
-        });
-        imgSortAsc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Collections.sort(countryInfo, new Comparator<CountryModel>() {
-                    public int compare(CountryModel obj1, CountryModel obj2) {
-                        contentLayout.setVisibility(View.GONE);
-                        // ===================Ascending order===========
-                        shimmer_view.setVisibility(View.VISIBLE);
-                        shimmer_view.startShimmerAnimation();
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                shimmer_view.stopShimmerAnimation();
-                                shimmer_view.setVisibility(View.GONE);
-                                contentLayout.setVisibility(View.VISIBLE);
-                                imgSortAsc.setVisibility(View.GONE);
-                                imgSortDsc.setVisibility(View.VISIBLE);
-                            }
-                        }, 5000);
-                        sort = true;
-                        return obj1.getCountry().compareToIgnoreCase(obj2.getCountry());
-                    }
-                });
-                dataAdapter.notifyDataSetChanged();
-            }
-        });
 
         if (Utility.isOnline(MainActivity.this)) {
             contentLayout.setVisibility(View.GONE);
@@ -230,6 +195,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                             txtTotalCase.setText("" + TotalCase);
                             txtRecovered.setText("" + Recovered);
                             txtDeath.setText("" + Death);
+                            lblNote.setText("Note: Total cases are sorted in desc order");
                             Collections.sort(countryInfo, new Comparator<CountryModel>() {
                                 public int compare(CountryModel obj1, CountryModel obj2) {
                                     return obj2.getTotalConfirmed().compareTo(obj1.getTotalConfirmed());
@@ -253,7 +219,151 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         }
     }
 
-    //======================Location============
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.lblAsc:
+                Collections.sort(countryInfo, new Comparator<CountryModel>() {
+                    public int compare(CountryModel obj1, CountryModel obj2) {
+                        contentLayout.setVisibility(View.GONE);
+                        // ===================Ascending order===========
+                        shimmer_view.setVisibility(View.VISIBLE);
+                        shimmer_view.startShimmerAnimation();
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                shimmer_view.stopShimmerAnimation();
+                                shimmer_view.setVisibility(View.GONE);
+                                contentLayout.setVisibility(View.VISIBLE);
+                                lblAsc.setVisibility(View.GONE);
+                                lblDesc.setVisibility(View.VISIBLE);
+                            }
+                        }, 5000);
+                        return obj1.getTotalConfirmed().compareTo(obj2.getTotalConfirmed());
+                    }
+                });
+                lblNote.setText("Note: Total cases are sorted in Asce order");
+                dataAdapter.notifyDataSetChanged();
+                break;
+            case R.id.lblDesc:
+                Collections.sort(countryInfo, new Comparator<CountryModel>() {
+                    public int compare(CountryModel obj1, CountryModel obj2) {
+                        contentLayout.setVisibility(View.GONE);
+                        // ===================Descending order===========
+                        shimmer_view.setVisibility(View.VISIBLE);
+                        shimmer_view.startShimmerAnimation();
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                shimmer_view.stopShimmerAnimation();
+                                shimmer_view.setVisibility(View.GONE);
+                                contentLayout.setVisibility(View.VISIBLE);
+                                lblDesc.setVisibility(View.GONE);
+                                lblAsc.setVisibility(View.VISIBLE);
+                            }
+                        }, 5000);
+                        return obj2.getTotalConfirmed().compareTo(obj1.getTotalConfirmed());
+                    }
+                });
+                lblNote.setText("Note: Total cases are sorted in desc order");
+                dataAdapter.notifyDataSetChanged();
+                break;
+            case R.id.lblDeathAsc:
+                Collections.sort(countryInfo, new Comparator<CountryModel>() {
+                    public int compare(CountryModel obj1, CountryModel obj2) {
+                        contentLayout.setVisibility(View.GONE);
+                        // ===================Ascending order===========
+                        shimmer_view.setVisibility(View.VISIBLE);
+                        shimmer_view.startShimmerAnimation();
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                shimmer_view.stopShimmerAnimation();
+                                shimmer_view.setVisibility(View.GONE);
+                                contentLayout.setVisibility(View.VISIBLE);
+                                lblDeathAsc.setVisibility(View.GONE);
+                                lblDeathDesc.setVisibility(View.VISIBLE);
+                            }
+                        }, 5000);
+                        return obj1.getTotalDeaths().compareTo(obj2.getTotalDeaths());
+                    }
+                });
+                lblNote.setText("Note: Total death are sorted in Ascending order");
+                dataAdapter.notifyDataSetChanged();
+                break;
+            case R.id.lblDeathDesc:
+                Collections.sort(countryInfo, new Comparator<CountryModel>() {
+                    public int compare(CountryModel obj1, CountryModel obj2) {
+                        contentLayout.setVisibility(View.GONE);
+                        // ===================Descending order===========
+                        shimmer_view.setVisibility(View.VISIBLE);
+                        shimmer_view.startShimmerAnimation();
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                shimmer_view.stopShimmerAnimation();
+                                shimmer_view.setVisibility(View.GONE);
+                                contentLayout.setVisibility(View.VISIBLE);
+                                lblDeathDesc.setVisibility(View.GONE);
+                                lblDeathAsc.setVisibility(View.VISIBLE);
+                            }
+                        }, 5000);
+                        return obj2.getTotalDeaths().compareTo(obj1.getTotalDeaths());
+                    }
+                });
+                lblNote.setText("Note: Total death are sorted in desc order");
+                dataAdapter.notifyDataSetChanged();
+                break;
+            case R.id.lblRecoveredAsc:
+                Collections.sort(countryInfo, new Comparator<CountryModel>() {
+                    public int compare(CountryModel obj1, CountryModel obj2) {
+                        contentLayout.setVisibility(View.GONE);
+                        // ===================Ascending order===========
+                        shimmer_view.setVisibility(View.VISIBLE);
+                        shimmer_view.startShimmerAnimation();
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                shimmer_view.stopShimmerAnimation();
+                                shimmer_view.setVisibility(View.GONE);
+                                contentLayout.setVisibility(View.VISIBLE);
+                                lblRecoveredAsc.setVisibility(View.GONE);
+                                lblRecoveredDesc.setVisibility(View.VISIBLE);
+                            }
+                        }, 5000);
+                        return obj1.getTotalRecovered().compareTo(obj2.getTotalRecovered());
+                    }
+                });
+                lblNote.setText("Note: Total Recovered are sorted in Ascending order");
+                dataAdapter.notifyDataSetChanged();
+                break;
+            case R.id.lblRecoveredDesc:
+                Collections.sort(countryInfo, new Comparator<CountryModel>() {
+                    public int compare(CountryModel obj1, CountryModel obj2) {
+                        contentLayout.setVisibility(View.GONE);
+                        // ===================Descending order===========
+                        shimmer_view.setVisibility(View.VISIBLE);
+                        shimmer_view.startShimmerAnimation();
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                shimmer_view.stopShimmerAnimation();
+                                shimmer_view.setVisibility(View.GONE);
+                                contentLayout.setVisibility(View.VISIBLE);
+                                lblRecoveredDesc.setVisibility(View.GONE);
+                                lblRecoveredAsc.setVisibility(View.VISIBLE);
+                            }
+                        }, 5000);
+                        return obj2.getTotalRecovered().compareTo(obj1.getTotalRecovered());
+                    }
+                });
+                lblNote.setText("Note: Total Recovered are sorted in desc order");
+                dataAdapter.notifyDataSetChanged();
+                break;
+        }
+    }
+    //======================Location=======================
+
     private void checkForLocationRequestSetting(LocationRequest locationRequest) {
         try {
             LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
@@ -458,4 +568,5 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     @Override
     public void onProviderDisabled(String provider) {
     }
+
 }
