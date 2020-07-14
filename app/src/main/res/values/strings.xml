@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TestProject</string>
+    <string name="app_name">Covid Tracker</string>
     <string name="google_maps_key">AIzaSyAxYRoikBUh6_wu8hwPUlHXcdmXnnSbGNg</string>
 
 </resources>
